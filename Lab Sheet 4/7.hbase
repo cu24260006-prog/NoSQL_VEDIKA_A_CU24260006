@@ -1,0 +1,20 @@
+# Practical 7: WebsiteCounter page-view counters.
+# HBase counters are stored as 64-bit integer values.
+
+create 'WebsiteCounter', 'views'
+
+# Increment page counters.
+incr 'WebsiteCounter', 'home', 'views:count', 1
+incr 'WebsiteCounter', 'home', 'views:count', 1
+incr 'WebsiteCounter', 'home', 'views:count', 1
+
+incr 'WebsiteCounter', 'products', 'views:count', 1
+incr 'WebsiteCounter', 'products', 'views:count', 1
+
+incr 'WebsiteCounter', 'contact', 'views:count', 1
+
+# Display the updated counter values.
+get 'WebsiteCounter', 'home'
+get 'WebsiteCounter', 'products'
+get 'WebsiteCounter', 'contact'
+scan 'WebsiteCounter'

@@ -1,0 +1,36 @@
+# Practical 15: Column-oriented Event Logging application using HBase.
+# This practical demonstrates table creation, insert, query, update and delete.
+
+create 'FinalEventApp', 'event', 'user', 'result'
+
+# INSERT event records.
+put 'FinalEventApp', 'EVT001', 'event:timestamp', '2026-10-01T10:00:00'
+put 'FinalEventApp', 'EVT001', 'event:type', 'login'
+put 'FinalEventApp', 'EVT001', 'user:user_id', 'U501'
+put 'FinalEventApp', 'result:status', 'success'
+
+put 'FinalEventApp', 'EVT002', 'event:timestamp', '2026-10-01T10:05:00'
+put 'FinalEventApp', 'EVT002', 'event:type', 'file_upload'
+put 'FinalEventApp', 'EVT002', 'user:user_id', 'U502'
+put 'FinalEventApp', 'result:status', 'success'
+
+# QUERY by row key and scan table.
+get 'FinalEventApp', 'EVT001'
+scan 'FinalEventApp'
+
+# UPDATE a cell.
+put 'FinalEventApp', 'EVT001', 'result:status', 'verified'
+get 'FinalEventApp', 'EVT001'
+
+# DELETE one cell, then delete one complete event row.
+delete 'FinalEventApp', 'EVT002', 'result:status'
+deleteall 'FinalEventApp', 'EVT002'
+scan 'FinalEventApp'
+
+# Concept notes:
+# Consistency: HBase provides strongly consistent reads/writes at the row level.
+# Availability: depends on HDFS, ZooKeeper, RegionServer and cluster setup.
+# Transactions: atomic operations are supported within a single row, not
+# general multi-row ACID transactions.
+# Query features: get, scan and filters; design row keys for access patterns.
+# Scaling: regions split and are served by RegionServers across the cluster.

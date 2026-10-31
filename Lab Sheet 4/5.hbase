@@ -1,0 +1,26 @@
+# Practical 5: Blogging Platform.
+# Column families: blog, author and comments.
+
+create 'Blog', 'blog', 'author', 'comments'
+
+# Blog record 1
+put 'Blog', 'B101', 'blog:title', 'My First Blog'
+put 'Blog', 'B101', 'blog:category', 'Technology'
+put 'Blog', 'B101', 'blog:body', 'Learning distributed databases.'
+put 'Blog', 'B101', 'author:name', 'Aarav'
+put 'Blog', 'B101', 'author:email', 'aarav@example.com'
+put 'Blog', 'B101', 'comments:C1', 'Very informative'
+
+# Blog record 2
+put 'Blog', 'B102', 'blog:title', 'Study Tips'
+put 'Blog', 'B102', 'blog:category', 'Education'
+put 'Blog', 'B102', 'author:name', 'Diya'
+put 'Blog', 'B102', 'comments:C1', 'Helpful post'
+
+# Blog record 3
+put 'Blog', 'B103', 'blog:title', 'Travel Diary'
+put 'Blog', 'B103', 'blog:category', 'Travel'
+put 'Blog', 'B103', 'author:name', 'Rohan'
+
+# Retrieve a particular blog using its row key.
+get 'Blog', 'B101'

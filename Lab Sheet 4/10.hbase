@@ -1,0 +1,21 @@
+# Practical 10: Create a table with multiple regions.
+# Pre-split the table into regions using row-key split points.
+
+create 'RegionalData', 'info', SPLITS => ['m', 't']
+
+# Insert rows in different key ranges.
+put 'RegionalData', 'a001', 'info:value', 'Region range before m'
+put 'RegionalData', 'n001', 'info:value', 'Region range m to t'
+put 'RegionalData', 'z001', 'info:value', 'Region range from t onward'
+
+scan 'RegionalData'
+
+# Inspect region distribution from HBase shell.
+list_regions 'RegionalData'
+
+# Explanation:
+# HBase divides a table into regions based on row-key ranges.
+# RegionServers host and serve regions. As a table grows, regions can split
+# and be assigned/balanced across RegionServers.
+# Multiple regions do not necessarily mean multiple RegionServers; the cluster
+# needs more than one RegionServer to demonstrate distribution across servers.

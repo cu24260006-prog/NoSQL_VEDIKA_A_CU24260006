@@ -1,0 +1,27 @@
+# Practical 3: Event Logging System.
+# Row key is event_id. Column families separate event, user and status data.
+
+create 'EventLog', 'event', 'user', 'result'
+
+put 'EventLog', 'EV001', 'event:timestamp', '2026-10-01T09:00:00'
+put 'EventLog', 'EV001', 'event:type', 'login'
+put 'EventLog', 'EV001', 'user:user_id', 'U101'
+put 'EventLog', 'EV001', 'user:ip', '192.168.1.10'
+put 'EventLog', 'EV001', 'result:status', 'success'
+
+put 'EventLog', 'EV002', 'event:timestamp', '2026-10-01T09:05:00'
+put 'EventLog', 'EV002', 'event:type', 'file_upload'
+put 'EventLog', 'EV002', 'user:user_id', 'U102'
+put 'EventLog', 'EV002', 'user:ip', '192.168.1.11'
+put 'EventLog', 'EV002', 'result:status', 'success'
+
+put 'EventLog', 'EV003', 'event:timestamp', '2026-10-01T09:10:00'
+put 'EventLog', 'EV003', 'event:type', 'login'
+put 'EventLog', 'EV003', 'user:user_id', 'U101'
+put 'EventLog', 'EV003', 'user:ip', '192.168.1.10'
+put 'EventLog', 'EV003', 'result:status', 'failed'
+
+# Retrieve events by row key.
+get 'EventLog', 'EV001'
+get 'EventLog', 'EV002'
+get 'EventLog', 'EV003'

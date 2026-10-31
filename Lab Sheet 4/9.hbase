@@ -1,0 +1,21 @@
+# Practical 9: Row-key design for a large-scale application.
+# Use a small hash prefix (salting) to spread writes across regions.
+# This example uses four prefix values: 00, 01, 02 and 03.
+
+create 'LargeScaleEvents', 'event'
+
+# Sample salted row keys: prefix + original event identifier.
+put 'LargeScaleEvents', '00_EVT001', 'event:user', 'U101'
+put 'LargeScaleEvents', '01_EVT002', 'event:user', 'U102'
+put 'LargeScaleEvents', '02_EVT003', 'event:user', 'U103'
+put 'LargeScaleEvents', '03_EVT004', 'event:user', 'U104'
+put 'LargeScaleEvents', '00_EVT005', 'event:user', 'U105'
+put 'LargeScaleEvents', '01_EVT006', 'event:user', 'U106'
+
+scan 'LargeScaleEvents'
+
+# Explanation:
+# A monotonically increasing row key can send all new writes to one region.
+# A prefix distributes writes more evenly when the table is pre-split using
+# matching key ranges. Salting improves write distribution but queries may
+# need to read multiple prefixes and combine the results.

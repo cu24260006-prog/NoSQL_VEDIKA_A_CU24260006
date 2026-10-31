@@ -1,0 +1,20 @@
+# Practical 8: User sessions with Time-To-Live (TTL).
+# TTL is specified in seconds. This example uses 60 seconds for demonstration.
+
+create 'UserSessions', {NAME => 'session', TTL => 60}, {NAME => 'user'}
+
+# Insert session records.
+put 'UserSessions', 'SESSION101', 'session:token', 'TKN101'
+put 'UserSessions', 'SESSION101', 'session:status', 'active'
+put 'UserSessions', 'SESSION101', 'user:user_id', 'U101'
+
+put 'UserSessions', 'SESSION102', 'session:token', 'TKN102'
+put 'UserSessions', 'SESSION102', 'session:status', 'active'
+put 'UserSessions', 'SESSION102', 'user:user_id', 'U102'
+
+# Display records before expiration.
+scan 'UserSessions'
+
+# Wait longer than the configured TTL, then scan again.
+# Expired cells become eligible for cleanup; physical removal may occur later
+# during HBase compaction, so expiration may not appear instantly.

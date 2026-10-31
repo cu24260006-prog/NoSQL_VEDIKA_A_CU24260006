@@ -1,0 +1,30 @@
+# Practical 4: Content Management System (CMS).
+
+create 'CMS', 'content', 'author', 'metadata'
+
+# Insert content records.
+put 'CMS', 'C101', 'content:title', 'Introduction to NoSQL'
+put 'CMS', 'C101', 'content:body', 'NoSQL databases support flexible data models.'
+put 'CMS', 'C101', 'author:name', 'Aarav'
+put 'CMS', 'C101', 'metadata:category', 'Technology'
+put 'CMS', 'C101', 'metadata:status', 'draft'
+
+put 'CMS', 'C102', 'content:title', 'Learning HBase'
+put 'CMS', 'C102', 'content:body', 'HBase is a distributed column-family database.'
+put 'CMS', 'C102', 'author:name', 'Diya'
+put 'CMS', 'C102', 'metadata:category', 'Education'
+put 'CMS', 'C102', 'metadata:status', 'published'
+
+# Retrieve a record.
+get 'CMS', 'C101'
+
+# Update title and status.
+put 'CMS', 'C101', 'content:title', 'Introduction to Apache HBase'
+put 'CMS', 'C101', 'metadata:status', 'published'
+get 'CMS', 'C101'
+
+# Delete one cell, then delete another complete row.
+delete 'CMS', 'C102', 'content:body'
+get 'CMS', 'C102'
+deleteall 'CMS', 'C102'
+scan 'CMS'

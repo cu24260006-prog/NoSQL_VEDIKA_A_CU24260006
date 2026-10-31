@@ -1,0 +1,29 @@
+# Practical 6: Demonstrate column-family data model and qualifiers.
+
+create 'CollegeData', 'personal', 'academic', 'contact'
+
+# One row can have different qualifiers within each column family.
+put 'CollegeData', 'S201', 'personal:name', 'Aarav'
+put 'CollegeData', 'S201', 'personal:city', 'Haridwar'
+put 'CollegeData', 'S201', 'personal:age', '21'
+
+put 'CollegeData', 'S201', 'academic:course', 'BCA'
+put 'CollegeData', 'S201', 'academic:semester', '3'
+put 'CollegeData', 'S201', 'academic:cgpa', '8.5'
+
+put 'CollegeData', 'S201', 'contact:email', 'aarav@example.com'
+put 'CollegeData', 'S201', 'contact:phone', '9876543210'
+
+# Display the complete row.
+get 'CollegeData', 'S201'
+
+# Display only one column family.
+get 'CollegeData', 'S201', {COLUMN => 'academic'}
+
+# Display one particular qualifier.
+get 'CollegeData', 'S201', {COLUMN => 'personal:name'}
+
+# Explanation:
+# personal, academic and contact are column families.
+# name, city, age, course, semester, cgpa, email and phone are qualifiers.
+# HBase stores columns grouped by family; qualifiers can vary from row to row.

@@ -1,0 +1,31 @@
+# Practical 1: Create Student table and insert five records.
+# Run these commands in the HBase shell.
+
+create 'Student', 'personal', 'academic'
+
+put 'Student', 'S101', 'personal:name', 'Aarav Sharma'
+put 'Student', 'S101', 'personal:city', 'Haridwar'
+put 'Student', 'S101', 'academic:course', 'BCA'
+put 'Student', 'S101', 'academic:semester', '3'
+
+put 'Student', 'S102', 'personal:name', 'Diya Singh'
+put 'Student', 'S102', 'personal:city', 'Roorkee'
+put 'Student', 'S102', 'academic:course', 'BCA'
+put 'Student', 'S102', 'academic:semester', '3'
+
+put 'Student', 'S103', 'personal:name', 'Rohan Verma'
+put 'Student', 'S103', 'personal:city', 'Dehradun'
+put 'Student', 'S103', 'academic:course', 'BBA'
+put 'Student', 'S103', 'academic:semester', '2'
+
+put 'Student', 'S104', 'personal:name', 'Meera Joshi'
+put 'Student', 'S104', 'personal:city', 'Haridwar'
+put 'Student', 'S104', 'academic:course', 'BCA'
+put 'Student', 'S104', 'academic:semester', '4'
+
+put 'Student', 'S105', 'personal:name', 'Kabir Khan'
+put 'Student', 'S105', 'personal:city', 'Roorkee'
+put 'Student', 'S105', 'academic:course', 'BCA'
+put 'Student', 'S105', 'academic:semester', '2'
+
+scan 'Student'
