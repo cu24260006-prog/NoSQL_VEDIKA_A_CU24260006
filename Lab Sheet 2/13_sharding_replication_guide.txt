@@ -1,0 +1,52 @@
+PRACTICAL 13: COMBINE SHARDING AND REPLICATION IN MONGODB
+
+Goal:
+Use multiple shards for data distribution and configure each shard as a
+replica set for fault tolerance. This is a cluster-configuration practical,
+not a single mongosh script.
+
+Architecture
+------------
+Application
+    |
+  mongos (query router)
+    |
+Config Server Replica Set
+    |
+    +---------------------+
+    |                     |
+Shard 1 Replica Set       Shard 2 Replica Set
+Primary + Secondary      Primary + Secondary
+
+Steps
+-----
+1. Start a config-server replica set with its required members.
+2. Start at least two shard replica sets; each shard should have a primary
+   and at least one secondary.
+3. Start mongos and connect it to the config-server replica set.
+4. Add each shard to the cluster using sh.addShard() from mongosh connected
+   to mongos. Example format:
+   sh.addShard("shard1/host1:27018,host2:27018");
+   sh.addShard("shard2/host3:27019,host4:27019");
+   Replace the example replica-set names and hosts with your actual setup.
+5. Enable sharding for the database:
+   sh.enableSharding("CombinedDemo");
+6. Create sample data in CombinedDemo.Students (at least 20 records).
+7. Choose a shard key based on query patterns and distribution.
+8. Shard the collection, for example:
+   sh.shardCollection("CombinedDemo.Students", { Student_ID: "hashed" });
+9. Check distribution:
+   sh.status();
+   db.getSiblingDB("CombinedDemo").Students.countDocuments({});
+10. Check replica status by connecting to each shard replica set and running:
+    rs.status();
+
+Explanation
+-----------
+Sharding distributes data across shards to improve horizontal scalability.
+Replication keeps copies of each shard's data on replica-set members to
+improve availability and fault tolerance. Together they provide both
+distribution and redundancy.
+
+A real cluster needs multiple mongod processes, configuration files,
+separate storage paths, suitable network access and adequate hardware.

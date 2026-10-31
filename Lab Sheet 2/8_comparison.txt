@@ -1,0 +1,31 @@
+PRACTICAL 8: COMPARISON OF MONGODB, CASSANDRA AND NEO4J
+
+Data model
+- MongoDB: Document model; records are BSON documents.
+- Cassandra: Wide-column model; data is stored in rows and columns grouped
+  into tables and partitioned by partition key.
+- Neo4j: Graph model; data is stored as nodes, relationships and properties.
+
+Storage structure
+- MongoDB: Collections contain documents.
+- Cassandra: Keyspaces contain tables; rows are distributed using partition keys.
+- Neo4j: Nodes and relationships form a connected graph.
+
+Query method
+- MongoDB: MongoDB Query API and aggregation pipeline.
+- Cassandra: CQL (Cassandra Query Language).
+- Neo4j: Cypher query language.
+
+Scalability
+- MongoDB: Supports horizontal scaling through sharding.
+- Cassandra: Distributed architecture supports horizontal scaling.
+- Neo4j: Can scale for graph workloads; clustering and deployment options depend
+  on the Neo4j edition and configuration.
+
+Suitable applications
+- MongoDB: Content management, product catalogues and flexible application data.
+- Cassandra: High-write, distributed workloads and time-series/event data.
+- Neo4j: Social networks, recommendations and connected-data analysis.
+
+The three files beginning with 8_ create the same sample student dataset in
+each database. Run each in its own database environment.

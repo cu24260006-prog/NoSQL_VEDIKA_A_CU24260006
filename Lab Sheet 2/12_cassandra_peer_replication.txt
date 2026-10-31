@@ -1,0 +1,55 @@
+PRACTICAL 12: PEER-TO-PEER REPLICATION USING CASSANDRA
+
+Cassandra uses a peer-to-peer architecture: nodes have equal roles and there
+is no single permanent master. A multi-node cluster is required to demonstrate
+replication across nodes.
+
+1. Configure multiple Cassandra nodes
+--------------------------------------
+- Install the same compatible Cassandra version on each machine/VM.
+- Give every node the same cluster_name.
+- Configure seed nodes, listen_address, rpc_address and the correct
+  data-centre/rack settings in cassandra.yaml.
+- Ensure required internode and client ports are reachable.
+- Start each Cassandra node and verify membership with nodetool status.
+
+2. Create a keyspace with a replication factor
+----------------------------------------------
+Run in cqlsh:
+
+CREATE KEYSPACE IF NOT EXISTS PeerDemo
+WITH replication = {
+  'class': 'NetworkTopologyStrategy',
+  'datacenter1': 3
+};
+
+The example assumes three nodes in a data centre named datacenter1.
+Use the actual data-centre name shown by your cluster.
+
+3. Insert sample data
+---------------------
+USE PeerDemo;
+CREATE TABLE IF NOT EXISTS Students (
+  Student_ID int PRIMARY KEY,
+  Name text,
+  Course text
+);
+INSERT INTO Students (Student_ID, Name, Course)
+VALUES (1201, 'Aarav Sharma', 'BCA');
+
+4. Verify availability across nodes
+-----------------------------------
+- Run nodetool status on each node to inspect cluster membership.
+- Connect to different nodes with cqlsh and query:
+  SELECT * FROM PeerDemo.Students;
+- With replication factor 3, replicas are placed on three nodes according
+  to the replication strategy and topology.
+
+5. Peer-to-peer vs master-secondary
+-----------------------------------
+Peer-to-peer: nodes are equal and can coordinate requests; data is replicated
+among nodes according to the replication strategy.
+Primary-secondary: one primary accepts writes and secondary members replicate
+the data; an election may select a new primary after failure.
+
+Note: A single-node installation cannot demonstrate peer-to-peer replication.

@@ -1,0 +1,54 @@
+PRACTICAL 10: DEMONSTRATE DATABASE SHARDING USING MONGODB
+
+Important:
+A real sharded MongoDB cluster requires multiple server processes and
+configuration. This guide gives a small local demonstration outline.
+It is not a one-file script and should be performed only after MongoDB
+is installed. Use separate terminal windows for the processes.
+
+1. Create at least 20 sample records
+------------------------------------
+Connect to a MongoDB server and run the following in mongosh:
+
+use ShardingDemo
+for (let i = 1; i <= 20; i++) {
+  db.Students.insertOne({
+    Student_ID: i,
+    Name: "Student" + i,
+    Course: i % 2 === 0 ? "BCA" : "BBA",
+    Marks: 50 + (i % 50)
+  });
+}
+
+2. Select an appropriate shard key
+----------------------------------
+Student_ID is used as the example shard key. A real shard key should be
+selected after considering query patterns, cardinality and write distribution.
+
+3. Configure a sharded cluster (high-level steps)
+-------------------------------------------------
+- Start one or more config-server replica-set members.
+- Start shard replica sets (at least two shards for a useful demonstration).
+- Start a mongos query router connected to the config-server replica set.
+- Connect mongosh to mongos, not directly to an individual shard.
+- Enable sharding for the database and shard the collection.
+
+Example commands to run in mongosh connected to mongos:
+
+sh.enableSharding("ShardingDemo");
+sh.shardCollection("ShardingDemo.Students", { Student_ID: "hashed" });
+
+4. Distribute and verify data
+-----------------------------
+sh.status();
+db.getSiblingDB("ShardingDemo").Students.countDocuments({});
+db.getSiblingDB("ShardingDemo").Students.find().sort({Student_ID: 1});
+
+5. Benefit
+----------
+Sharding distributes collection data across multiple shards. It can increase
+storage capacity and throughput by spreading workload across servers.
+
+Note: The commands above enable/shard a collection only after a functioning
+sharded cluster is configured. A single standalone MongoDB server cannot
+demonstrate actual multi-shard distribution.

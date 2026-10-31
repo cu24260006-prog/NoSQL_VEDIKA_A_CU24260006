@@ -1,0 +1,126 @@
+PRACTICAL 15: DATABASE DISTRIBUTION MODELS
+
+1. SINGLE SERVER
+Architecture:
+Application ---> One Database Server
+
+Data distribution:
+All database data is stored on one server.
+
+Failure handling:
+If the server fails, database service may become unavailable unless backups
+or a recovery system are available.
+
+Advantage:
+Simple to install, manage and maintain.
+
+Limitation:
+Limited by the capacity of one server and creates a single point of failure.
+
+Suitable application:
+Small college project or small local application.
+
+2. SHARDING
+Architecture:
+Application ---> Query Router ---> Shard 1
+                              \--> Shard 2
+                              \--> Shard 3
+
+Data distribution:
+Different portions of a dataset are stored on different shards according
+to a shard key.
+
+Failure handling:
+A failed shard can make its portion of data unavailable unless replication
+or another recovery mechanism is configured.
+
+Advantage:
+Supports horizontal scaling of storage and workload.
+
+Limitation:
+Choosing a poor shard key can create uneven distribution and hotspots.
+
+Suitable application:
+Large application with a dataset too large for one server.
+
+3. MASTER-SLAVE / PRIMARY-SECONDARY REPLICATION
+Architecture:
+Application ---> Primary
+                  |----> Secondary 1
+                  \----> Secondary 2
+
+Data distribution:
+The primary handles writes and copies changes to secondary members.
+
+Failure handling:
+Eligible secondaries may elect a new primary when the old primary fails,
+provided the required majority is available.
+
+Advantage:
+Improves availability and provides redundant copies of data.
+
+Limitation:
+Replication can introduce lag; elections may temporarily interrupt writes.
+
+Suitable application:
+Applications that need high availability and data redundancy.
+
+4. PEER-TO-PEER REPLICATION
+Architecture:
+Node 1 <----> Node 2
+  ^             |
+  |             v
+  +---------- Node 3
+
+Data distribution:
+Nodes have equal roles; data is replicated among nodes according to the
+database's replication strategy.
+
+Failure handling:
+Other nodes can continue serving requests when a node fails, depending on
+replication factor, consistency level and remaining nodes.
+
+Advantage:
+Avoids dependence on one permanent master and supports distributed operation.
+
+Limitation:
+Consistency and conflict handling can be more complex.
+
+Suitable application:
+Distributed workloads such as Cassandra-based systems.
+
+5. SHARDING + REPLICATION
+Architecture:
+                    Application
+                         |
+                       mongos
+                         |
+            +------------+------------+
+            |                         |
+       Shard 1 Replica Set       Shard 2 Replica Set
+       Primary + Secondary       Primary + Secondary
+
+Data distribution:
+Sharding divides the dataset across shards. Each shard replicates its own
+data to secondary members.
+
+Failure handling:
+Replication can keep a shard available after an individual member fails.
+Sharding distributes capacity and workload across shards.
+
+Advantage:
+Combines horizontal scalability with redundancy and fault tolerance.
+
+Limitation:
+More complex and costly to configure, monitor and maintain.
+
+Suitable application:
+Large-scale applications requiring both high capacity and high availability.
+
+SUMMARY
+-------
+Single Server: simple, but limited capacity and a single point of failure.
+Sharding: distributes data to scale horizontally.
+Primary-Secondary: copies data from primary to secondary members.
+Peer-to-Peer: equal nodes replicate data among themselves.
+Sharding + Replication: distributes data and keeps redundant copies.

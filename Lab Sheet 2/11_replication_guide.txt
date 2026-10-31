@@ -1,0 +1,57 @@
+PRACTICAL 11: MASTER-SLAVE (PRIMARY-SECONDARY) REPLICATION
+
+MongoDB uses a replica set with a PRIMARY and SECONDARY members. The older
+term master-slave is commonly described as primary-secondary.
+
+This practical requires at least two MongoDB server processes. For a proper
+demonstration, use three members (one primary and two secondaries) where possible.
+
+1. Start MongoDB instances with the same replica-set name
+---------------------------------------------------------
+Example command pattern (use separate data folders and ports):
+
+mongod --replSet rsLab --port 27017 --dbpath C:\data\rs1
+mongod --replSet rsLab --port 27018 --dbpath C:\data\rs2
+
+Create the data folders first. Adjust paths for your operating system.
+
+2. Connect to the first instance and initiate the replica set
+-------------------------------------------------------------
+mongosh --port 27017
+
+In mongosh:
+rs.initiate({
+  _id: "rsLab",
+  members: [
+    { _id: 0, host: "localhost:27017" },
+    { _id: 1, host: "localhost:27018" }
+  ]
+});
+
+3. Check replica-set status
+---------------------------
+rs.status();
+
+4. Insert data into the primary
+-------------------------------
+use ReplicationDemo
+db.Students.insertOne({Student_ID: 1101, Name: "Aarav", Course: "BCA"});
+
+5. Verify data on the secondary
+-------------------------------
+Connect to the secondary:
+mongosh --port 27018
+
+In mongosh:
+rs.secondaryOk();
+use ReplicationDemo
+db.Students.find();
+
+6. Explain primary failure
+--------------------------
+If the primary becomes unavailable, the remaining eligible members can hold
+an election. A secondary may be elected as the new primary if a majority is
+available. During election, writes may be temporarily unavailable.
+
+This is a demonstration outline. Hostnames, firewall rules, bindIp and
+MongoDB version-specific settings may need adjustment.

@@ -1,0 +1,43 @@
+# Practical 6: HBase Students table with personal and academic column families.
+# Run these commands in the HBase Shell.
+
+# Create a table with two column families.
+create 'Students', 'personal', 'academic'
+
+# 1. Insert at least five student records.
+put 'Students', '501', 'personal:Name', 'Aarav Sharma'
+put 'Students', '501', 'personal:Course', 'BCA'
+put 'Students', '501', 'academic:Semester', '3'
+put 'Students', '501', 'academic:Marks', '82'
+
+put 'Students', '502', 'personal:Name', 'Diya Singh'
+put 'Students', '502', 'personal:Course', 'BCA'
+put 'Students', '502', 'academic:Semester', '3'
+put 'Students', '502', 'academic:Marks', '91'
+
+put 'Students', '503', 'personal:Name', 'Rohan Verma'
+put 'Students', '503', 'personal:Course', 'BBA'
+put 'Students', '503', 'academic:Semester', '2'
+put 'Students', '503', 'academic:Marks', '76'
+
+put 'Students', '504', 'personal:Name', 'Meera Gupta'
+put 'Students', '504', 'personal:Course', 'BCA'
+put 'Students', '504', 'academic:Semester', '5'
+put 'Students', '504', 'academic:Marks', '88'
+
+put 'Students', '505', 'personal:Name', 'Kabir Joshi'
+put 'Students', '505', 'personal:Course', 'BCom'
+put 'Students', '505', 'academic:Semester', '4'
+put 'Students', '505', 'academic:Marks', '79'
+
+# 2. Retrieve a particular student's details.
+get 'Students', '501'
+
+# 3. Update student information (change marks).
+put 'Students', '501', 'academic:Marks', '86'
+
+# 4. Display all records.
+scan 'Students'
+
+# 5. Delete a student record.
+deleteall 'Students', '505'

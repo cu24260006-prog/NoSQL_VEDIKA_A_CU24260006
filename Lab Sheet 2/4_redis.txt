@@ -1,0 +1,22 @@
+# Practical 4: Student information system using Redis.
+# Run these commands in redis-cli after starting the Redis server.
+
+# 1-2. Store student ID as key and student name as value (five students).
+SET student:301 "Aarav Sharma"
+SET student:302 "Diya Singh"
+SET student:303 "Rohan Verma"
+SET student:304 "Meera Gupta"
+SET student:305 "Kabir Joshi"
+
+# 3. Retrieve one student using the key.
+GET student:301
+
+# 4. Update a student's value.
+SET student:301 "Aarav Kumar"
+GET student:301
+
+# 5. Delete a student.
+DEL student:305
+
+# 6. Display all available student keys.
+KEYS student:*
